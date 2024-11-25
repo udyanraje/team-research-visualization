@@ -105,3 +105,25 @@ curve(params["a"] * exp(-params["b"] * x),
       col = "black", 
       add = TRUE,
       lwd=2)
+
+# Time for the scatter plot to get some insights about the relationship between 
+# our dependent and independent variables!
+
+x <- dataset$Open
+y <- dataset$Close
+plot(x, 
+     y, 
+     main = "Bitcoin Price Comparison: Open vs Close (2019-2022)", 
+     xlab = "Open", 
+     ylab = "Close", 
+     pch = 19, 
+     frame = T)
+model <- lm(x ~ y, data = dataset)
+abline(model, col = "blue")
+
+# Performing Spearman Correlation:
+
+result <- cor.test(x,y, method="spearman")
+cat("Spearman Correlation Coefficient:", result$estimate, "\n")
+cat("P-value:", result$p.value, "\n")
+cat("Test Statistic is: " , result$statistic)
