@@ -50,3 +50,27 @@ null_close_count <- sum(dataset$Close == "null")
 # Print the results
 cat("Rows with 'null' in 'Open':", null_open_count, "\n")
 cat("Rows with 'null' in 'Close':", null_close_count, "\n")
+
+# As significant amount of rows have these null values we 
+# use Replace Missing Values with Surrounding Non-Null Average.
+install.packages("zoo")
+library(zoo)
+
+# Replace "null" with NA
+dataset[dataset == "null"] <- NA
+
+# Replace NA values with surrounding average in 'Open' column
+dataset$Open <- na.approx(dataset$Open, na.rm = FALSE)
+
+# Replace NA values with surrounding average in 'Close' column
+dataset$Close <- na.approx(dataset$Close, na.rm = FALSE)
+
+# Checking the null count again 
+null_open_count_again <- sum(dataset$Open == "null")
+null_open_count_again
+null_close_count_again <- sum(dataset$Close == "null")
+null_close_count_again
+
+# Descriptive stats about our dependent and independent variables:
+summary(dataset$Open)
+summary(dataset$Close)
