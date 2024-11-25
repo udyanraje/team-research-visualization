@@ -74,3 +74,34 @@ null_close_count_again
 # Descriptive stats about our dependent and independent variables:
 summary(dataset$Open)
 summary(dataset$Close)
+
+ # Histogram for the dependent variable to see data spread!
+hist(dataset$Close, 
+     main = "Distribution of Bitcoin Open Prices (2019-2022)", 
+     xlab = "Close Prices (Price of 1 Satoshi: 1btc price/100,000,000)", 
+     col = "red", 
+     border = "white", 
+     probability = TRUE, 
+     breaks = 50)  # Adjust this number for finer bins
+
+
+# Fit an exponential decay curve to the histogram
+# Define the exponential function (decay)
+decay_function <- function(x, a, b) {
+  a * exp(-b * x)
+}
+
+# Fit the model (using nonlinear least squares fitting)
+fit <- nls(density ~ decay_function(x, a, b), 
+           data = data.frame(x = hist(dataset$Close, plot = FALSE)$mids,
+                             density = hist(dataset$Close, plot = FALSE)$density),
+           start = list(a = 1, b = 0.001))  
+
+# Extract the fitted parameters
+params <- coef(fit)
+
+# Add the exponential decay line to the histogram
+curve(params["a"] * exp(-params["b"] * x), 
+      col = "black", 
+      add = TRUE,
+      lwd=2)
