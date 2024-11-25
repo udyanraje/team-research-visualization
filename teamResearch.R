@@ -1,3 +1,20 @@
+## Setting the working directory to where the dataset is!
+
+getwd()
+setwd("G:/team-research/ds&code")
+
+## Importing the Dataset!
+dataset <- read.csv("./Bitcoin CZ.csv") 
+
+## Display the first 2 rows of the dataset!
+head(dataset, 2)
+
+## Running some descriptive Stats on our dependent and independent variables!
+
+print("The data covers a time range or interval of:")
+min_timestamp <- min(dataset$Date)
+max_timestamp <- max(dataset$Date)
+
 cat("Minimum timestamp:", min_timestamp, "\n")
 cat("Maximum timestamp:", max_timestamp, "\n")
 
